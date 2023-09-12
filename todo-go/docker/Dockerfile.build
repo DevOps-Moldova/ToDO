@@ -1,0 +1,17 @@
+FROM golang:latest as builder
+
+WORKDIR /src
+
+COPY . /src/
+
+RUN go install github.com/swaggo/swag/cmd/swag@latest 
+RUN swag init -g cmd/main/main.go -o ./docs
+RUN CGO_ENABLED=0 GOOS=linux  go build -a -installsuffix cgo -o /dist/app ./cmd/main/main.go
+
+FROM alpine:3
+
+WORKDIR /srv
+
+COPY --from=builder /dist/app /srv/
+
+CMD [ "/srv/app" ]

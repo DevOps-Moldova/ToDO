@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  todo-go:
+    image: todo-go
+    build:
+      context: todo-go
+      dockerfile: docker/Dockerfile.build
+    ports:
+      - 8080:8080
+    volumes:
+      - ./.env:/srv/app.env
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 6500:5432
+    env_file:
+      - ./.env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:

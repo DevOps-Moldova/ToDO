@@ -1,0 +1,134 @@
+definitions:
+  models.ToDo:
+    properties:
+      createdAt:
+        example: "2023-09-12T15:45:44.523792+03:00"
+        type: string
+      description:
+        example: My New ToDo
+        type: string
+      id:
+        example: 2afbae48-4fa5-41f6-9a2f-82b9503d18ed
+        type: string
+      name:
+        example: ToDo14
+        type: string
+      status:
+        example: New
+        type: string
+      updatedAt:
+        example: "2023-09-12T15:45:44.523792+03:00"
+        type: string
+    required:
+    - description
+    - name
+    type: object
+info:
+  contact: {}
+paths:
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: get all ToDos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            items:
+              $ref: '#/definitions/models.ToDo'
+            type: array
+      summary: get ToDOs
+      tags:
+      - todo
+    post:
+      consumes:
+      - application/json
+      description: create new ToDo
+      parameters:
+      - description: ToDo details
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.ToDo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ToDo'
+      summary: add ToDo
+      tags:
+      - todo
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete existing ToDo
+      parameters:
+      - description: ToDo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Delete ToDo
+      tags:
+      - todo
+    get:
+      consumes:
+      - application/json
+      description: Get existing ToDo
+      parameters:
+      - description: ToDo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ToDo'
+      summary: Get ToDo
+      tags:
+      - todo
+    put:
+      consumes:
+      - application/json
+      description: Update existing ToDo
+      parameters:
+      - description: ToDo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: ToDo details
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.ToDo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/models.ToDo'
+      summary: Update ToDo
+      tags:
+      - todo
+swagger: "2.0"
