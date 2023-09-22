@@ -6,7 +6,7 @@ services:
       context: todo-go
       dockerfile: docker/Dockerfile.build
     ports:
-      - 8080:8080
+      - "8080:8080"
     volumes:
       - ./.env:/srv/app.env
     depends_on:
@@ -15,7 +15,7 @@ services:
     image: postgres
     container_name: postgres
     ports:
-      - 6500:5432
+      - "6500:5432"
     env_file:
       - ./.env
     volumes:
@@ -27,7 +27,7 @@ services:
       context: todo-angular
       dockerfile: docker/Dockerfile
     ports:
-      - 4200:4200
+      - "4200:4200"
     volumes:
       - ./todo-angular:/app
     depends_on:
@@ -38,7 +38,7 @@ services:
       context: todo-angular
       dockerfile: docker/nginx.Dockerfile
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - ./todo-angular:/app
     depends_on:
