@@ -20,5 +20,28 @@ services:
       - ./.env
     volumes:
       - postgres:/var/lib/postgresql/data
+  todo-angular:
+    image: todo-angular
+    command: ng serve --host 0.0.0.0
+    build:
+      context: todo-angular
+      dockerfile: docker/Dockerfile
+    ports:
+      - 4200:4200
+    volumes:
+      - ./todo-angular:/app
+    depends_on:
+      - todo-go
+  todo-angular-nginx:
+    image: todo-angular
+    build:
+      context: todo-angular
+      dockerfile: docker/nginx.Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./todo-angular:/app
+    depends_on:
+      - todo-angular
 volumes:
   postgres:
