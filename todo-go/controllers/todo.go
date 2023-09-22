@@ -34,6 +34,7 @@ func NewToDoController(DB *gorm.DB) ToDoController {
 // @Success 200 {object} models.ToDo "ok"
 // @Router /todos [post]
 func (pc *ToDoController) AddToDo(ctx *gin.Context) {
+    ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	// currentUser := ctx.MustGet("currentUser").(models.ToDo)
 	var payload *models.ToDo
 
@@ -75,6 +76,7 @@ func (pc *ToDoController) AddToDo(ctx *gin.Context) {
 // @Success 200 {array} models.ToDo "ok"
 // @Router /todos [get]
 func (pc *ToDoController) GetToDos(ctx *gin.Context) {
+    ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var page = ctx.DefaultQuery("page", "1")
 	var limit = ctx.DefaultQuery("limit", "10")
 
@@ -104,6 +106,7 @@ func (pc *ToDoController) GetToDos(ctx *gin.Context) {
 // @Success 200 {object} models.ToDo "ok"
 // @Router /todos/{id} [put]
 func (pc *ToDoController) UpdateToDo(ctx *gin.Context) {
+    ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	id := ctx.Param("id")
 
 	var payload *models.ToDo
@@ -142,6 +145,7 @@ func (pc *ToDoController) UpdateToDo(ctx *gin.Context) {
 // @Success 200 {object} models.ToDo "ok"
 // @Router /todos/{id} [get]
 func (pc *ToDoController) FindToDoById(ctx *gin.Context) {
+    ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	todoId := ctx.Param("id")
 
 	var todo models.ToDo
@@ -165,6 +169,7 @@ func (pc *ToDoController) FindToDoById(ctx *gin.Context) {
 // @Success 204 {object} string "ok"
 // @Router /todos/{id} [delete]
 func (pc *ToDoController) DeleteToDo(ctx *gin.Context) {
+    ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	todoId := ctx.Param("id")
 
 	result := pc.DB.Delete(&models.ToDo{}, "id = ?", todoId)
