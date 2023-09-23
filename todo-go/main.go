@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/DevOps-Moldova/ToDo/todo-go/controllers"
 	"github.com/DevOps-Moldova/ToDo/todo-go/initializers"
 	"github.com/DevOps-Moldova/ToDo/todo-go/routes"
@@ -33,6 +31,12 @@ func init() {
 	ToDoRouteController = routes.NewRouteToDoController(ToDoController)
 
 	server = gin.Default()
+	config_cors := cors.DefaultConfig()
+	// config.AllowOrigins = []string{"http://google.com"}
+	// config.AllowOrigins = []string{"http://google.com", "http://facebook.com"}
+	config.AllowAllOrigins = true
+
+	server.Use(cors.New(config_cors))
 }
 
 func main() {
@@ -47,17 +51,6 @@ func main() {
 
 	routes.DocRoute(server)
 	router := server.Group("/api")
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost", "http://localhost:4200"},
-		AllowMethods:     []string{"PUT", "PATCH", "GET"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "http://localhost"
-		},
-		MaxAge: 12 * time.Hour,
-	}))
 
 	router.GET("/health", func(ctx *gin.Context) {
 		message := "ok"
