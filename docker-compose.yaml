@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  todo-go:
+    image: todo-go
+    build:
+      context: todo-go
+      dockerfile: docker/Dockerfile.build
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./.env:/srv/app.env
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "6500:5432"
+    env_file:
+      - ./.env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  todo-angular:
+    image: todo-angular
+    command: ng serve --host 0.0.0.0
+    build:
+      context: todo-angular
+      dockerfile: docker/Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./todo-angular:/app
+    depends_on:
+      - todo-go
+  todo-angular-nginx:
+    image: todo-angular
+    build:
+      context: todo-angular
+      dockerfile: docker/nginx.Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./todo-angular:/app
+    depends_on:
+      - todo-angular
+volumes:
+  postgres:
